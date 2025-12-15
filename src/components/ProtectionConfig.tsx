@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { fetchDomains, createDomain as apiCreateDomain, deleteDomain as apiDeleteDomain, updateDomainStatus as apiUpdateDomainStatus, fetchLogs } from '../lib/api';
-import { HighlightSection } from './ui/HighlightSection';
+import { ProtectedDomain } from '../lib/supabase';
 import DashboardMetrics from './DashboardMetrics';
 import MiniActivityChart from './MiniActivityChart';
 
-interface Domain {
-  id: string;
-  protected_domain: string;
-  param_key: string;
-  safe_url: string;
-  money_url: string;
-  is_active: boolean;
-  created_at: string;
+interface Domain extends ProtectedDomain {
+  param_key?: string;
+  safe_url?: string;
+  money_url?: string;
+  is_active?: boolean;
 }
 
 interface DomainStats {

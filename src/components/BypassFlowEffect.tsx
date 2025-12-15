@@ -4,7 +4,7 @@ interface FlowLineProps {
   position: 'top' | 'bottom';
 }
 
-function FlowLine({ position }: FlowLineProps) {
+export function FlowLine({ position }: FlowLineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
