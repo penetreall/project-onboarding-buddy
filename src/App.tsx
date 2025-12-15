@@ -1,27 +1,83 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { useState, useEffect } from 'react';
+import { getCurrentUser, getSessionId, User } from './lib/api';
+import AuthForm from './components/AuthForm';
+import DashboardLayout from './components/DashboardLayout';
+import ProtectionConfig from './components/ProtectionConfig';
+import SecurityLogs from './components/SecurityLogs';
+import HowToUse from './components/HowToUse';
+import UserManagement from './components/UserManagement';
+import Settings from './components/Settings';
+import ParticlesBackground from './components/ParticlesBackground';
 
-const queryClient = new QueryClient();
+function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState('protection');
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const sessionId = getSessionId();
+      if (!sessionId) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  if (loading) {
+    return null;
+  }
+
+  if (!user) {
+    return (
+      <div className="fixed inset-0 theme-bg">
+        <ParticlesBackground />
+        <AuthForm />
+      </div>
+    );
+  }
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'protection':
+        return <ProtectionConfig onViewChange={setCurrentView} />;
+      case 'logs':
+        return <SecurityLogs />;
+      case 'howto':
+        return <HowToUse />;
+      case 'users':
+        return user.is_admin ? <UserManagement /> : <ProtectionConfig onViewChange={setCurrentView} />;
+      case 'settings':
+        return <Settings />;
+      default:
+        return <ProtectionConfig onViewChange={setCurrentView} />;
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 theme-bg">
+      <ParticlesBackground />
+      <DashboardLayout
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        isAdmin={user.is_admin}
+      >
+        {renderView()}
+      </DashboardLayout>
+    </div>
+  );
+}
 
 export default App;
