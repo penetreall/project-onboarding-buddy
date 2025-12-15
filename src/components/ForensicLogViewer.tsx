@@ -1,7 +1,7 @@
 import { AccessLog } from '../types/logs';
 import { Badge } from './ui/Badge';
-import { X, CheckCircle, XCircle, Clock, Globe, Smartphone, AlertTriangle } from 'lucide-react';
-import { translateReason, translateDecision, translateCountrySource, translatePlatform, translateNetwork, translateIPType } from '../lib/translations';
+import { X, CheckCircle, XCircle } from 'lucide-react';
+import { translateReason, translateDecision, translatePlatform, translateNetwork, translateIPType } from '../lib/translations';
 
 interface ForensicLogViewerProps {
   log: AccessLog;
@@ -32,7 +32,7 @@ export default function ForensicLogViewer({ log, onClose }: ForensicLogViewerPro
           <div className="backdrop-blur-md bg-white/[0.02] border border-white/[0.08] rounded-lg p-4 shadow-lg">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-[#e5e5e5] font-medium">Resumo da Decisão</h3>
-              <Badge variant={log.is_safe ? 'error' : 'success'}>
+              <Badge variant={log.is_safe ? 'danger' : 'success'}>
                 {log.is_safe ? 'NEGADO' : 'PERMITIDO'}
               </Badge>
             </div>

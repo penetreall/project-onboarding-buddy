@@ -2,6 +2,7 @@ export interface AccessLog {
   id: string;
   domain_id: string | null;
   ip: string;
+  ip_address?: string;
   ip_type?: string;
   user_agent: string;
   headers?: any;
@@ -42,4 +43,10 @@ export interface AccessLog {
   fatal_error?: boolean;
   fatal_error_stage?: string | null;
   created_at: string;
+  timestamp?: string;
+  reason?: string;
+  via?: string;
+  passed_validations?: number;
+  failed_validations?: number;
+  device_type?: string;
 }

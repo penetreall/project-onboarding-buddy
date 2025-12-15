@@ -107,7 +107,7 @@ export default function SecurityLogs() {
 
             <div className="border border-[#252525] rounded-lg p-4">
               <div className="text-[12px] text-[#666666] mb-2">IP</div>
-              <div className="text-[13px] text-white font-mono">{selectedLog.ip_address}</div>
+              <div className="text-[13px] text-white font-mono">{selectedLog.ip_address || selectedLog.ip}</div>
             </div>
 
             {selectedLog.user_agent && (
@@ -117,16 +117,16 @@ export default function SecurityLogs() {
               </div>
             )}
 
-            {selectedLog.reason && (
+            {(selectedLog.reason || selectedLog.primary_reason) && (
               <div className="border border-[#252525] rounded-lg p-4">
                 <div className="text-[12px] text-[#666666] mb-2">Motivo</div>
-                <div className="text-[13px] text-white">{translateReason(selectedLog.reason)}</div>
+                <div className="text-[13px] text-white">{translateReason(selectedLog.reason || selectedLog.primary_reason)}</div>
               </div>
             )}
 
             <div className="border border-[#252525] rounded-lg p-4">
               <div className="text-[12px] text-[#666666] mb-2">Data/Hora</div>
-              <div className="text-[13px] text-white font-mono">{formatDate(selectedLog.timestamp)}</div>
+              <div className="text-[13px] text-white font-mono">{formatDate(selectedLog.timestamp || selectedLog.created_at)}</div>
             </div>
           </div>
         </div>
@@ -251,10 +251,10 @@ export default function SecurityLogs() {
                       </span>
                     </td>
                     <td className="px-4 py-3 font-mono text-[12px] text-white">
-                      {log.ip_address}
+                      {log.ip_address || log.ip}
                     </td>
                     <td className="px-4 py-3 text-[12px] text-[#888888]">
-                      {log.via || 'Unknown'}
+                      {log.via || log.ad_network || 'Unknown'}
                     </td>
                     <td className="px-4 py-3 text-[11px]">
                       <span className="text-[#10B981]">{log.passed_validations || 0}</span>
@@ -262,10 +262,10 @@ export default function SecurityLogs() {
                       <span className="text-[#EF4444]">{log.failed_validations || 0}</span>
                     </td>
                     <td className="px-4 py-3 text-[12px] text-[#888888]">
-                      {log.device_type || 'desktop'}
+                      {log.device_type || log.platform_type || 'desktop'}
                     </td>
                     <td className="px-4 py-3 text-right text-[11px] text-[#666666] font-mono">
-                      {formatDate(log.timestamp)}
+                      {formatDate(log.timestamp || log.created_at)}
                     </td>
                   </tr>
                 ))}
