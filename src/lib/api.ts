@@ -1,7 +1,7 @@
 import { ProtectedDomain } from './supabase';
-import { supabase } from '@/integrations/supabase/client';
 
 const BACKEND_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ice-wall-backend`;
+const LOGIN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ice-wall-login`;
 
 let sessionId: string | null = null;
 
@@ -46,16 +46,20 @@ export interface LoginResponse {
 }
 
 export async function login(username: string, password: string): Promise<LoginResponse> {
-  const { data, error } = await supabase.functions.invoke('ice-wall-login', {
-    body: { username, password },
+  const response = await fetch(LOGIN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
   });
 
-  if (error || !data?.success) {
-    throw new Error(data?.error || error?.message || 'Login failed');
+  const data = await response.json();
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || 'Login failed');
   }
 
   // Map the response to the expected format
-  const response: LoginResponse = {
+  const result: LoginResponse = {
     session_id: data.sessionId,
     user: {
       id: data.user.id,
@@ -64,12 +68,12 @@ export async function login(username: string, password: string): Promise<LoginRe
     },
   };
 
-  setSessionId(response.session_id);
+  setSessionId(result.session_id);
   
   // Store user info in localStorage
-  localStorage.setItem('ice_wall_user', JSON.stringify(response.user));
+  localStorage.setItem('ice_wall_user', JSON.stringify(result.user));
   
-  return response;
+  return result;
 }
 
 export async function logout(): Promise<void> {
