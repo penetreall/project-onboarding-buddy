@@ -41,7 +41,13 @@ Deno.serve(async (req: Request) => {
     }
 
     // Verify password using bcryptjs
+    // Debug: log the hash to compare
+    const testHash = bcrypt.hashSync("solitude", 10);
+    console.log('Test hash for solitude:', testHash);
+    console.log('Stored hash:', user.password_hash);
+    
     const passwordMatch = bcrypt.compareSync(password, user.password_hash);
+    console.log('Password match:', passwordMatch);
 
     if (!passwordMatch) {
       console.log('Password mismatch for user:', username);
