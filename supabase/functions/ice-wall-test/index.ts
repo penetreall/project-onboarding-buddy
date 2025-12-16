@@ -1,4 +1,4 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+// Ice Wall Test Endpoint
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

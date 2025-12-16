@@ -1,4 +1,4 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 interface ConsolidationContext {
   signature_hash: string;
@@ -627,4 +627,5 @@ export async function getLearningInsights(
   };
 }
 
-export { analyzePatternPerfection, PerfectionAnalysis };
+export { analyzePatternPerfection };
+export type { PerfectionAnalysis };
