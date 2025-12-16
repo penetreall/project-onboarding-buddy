@@ -31,30 +31,59 @@ export default function AuthForm() {
     }
   };
 
-  const getButtonText = () => {
+  const getButtonContent = () => {
     switch (buttonState) {
       case 'loading':
-        return 'Autenticando...';
+        return (
+          <span className="flex items-center justify-center gap-2">
+            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"/>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+            </svg>
+            Autenticando
+          </span>
+        );
       case 'success':
-        return 'Bem-vindo';
+        return (
+          <span className="flex items-center justify-center gap-2">
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Sucesso
+          </span>
+        );
       case 'error':
-        return 'Falhou';
+        return 'Tentar novamente';
       default:
         return 'Entrar';
     }
   };
 
   return (
-    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 relative">
-      <div className="w-full max-w-sm relative z-10">
-        <div className="mb-8">
-          <h1 className="text-[24px] font-medium text-white mb-1">IceWall</h1>
-          <p className="text-[13px] text-[#666666]">Faça login para continuar</p>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-[380px] animate-fade-in">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[hsl(200,80%,55%)] to-[hsl(200,60%,40%)] flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <span className="text-xl font-semibold text-[hsl(var(--color-text-primary))] tracking-tight">IceWall</span>
+          </div>
+          <h1 className="text-2xl font-semibold text-[hsl(var(--color-text-primary))] mb-2">
+            Bem-vindo de volta
+          </h1>
+          <p className="text-[15px] text-[hsl(var(--color-text-secondary))]">
+            Entre com suas credenciais para acessar o painel
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="username" className="block text-[13px] text-[#888888] mb-2">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-2">
+            <label htmlFor="username" className="block text-sm font-medium text-[hsl(var(--color-text-secondary))]">
               Usuário
             </label>
             <input
@@ -63,13 +92,14 @@ export default function AuthForm() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-3 py-2 text-[13px] bg-[#161616] border border-[#252525] text-white rounded-md focus:outline-none focus:border-[#3B82F6] transition-colors"
+              autoComplete="username"
+              className="w-full h-11 px-4 text-[15px] bg-[hsl(var(--color-surface))] border border-[hsl(var(--color-border))] text-[hsl(var(--color-text-primary))] rounded-lg focus:outline-none focus:border-[hsl(var(--color-accent))] focus:ring-1 focus:ring-[hsl(var(--color-accent))] transition-all duration-200"
               placeholder="seu-usuario"
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-[13px] text-[#888888] mb-2">
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-[hsl(var(--color-text-secondary))]">
               Senha
             </label>
             <input
@@ -78,13 +108,19 @@ export default function AuthForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 text-[13px] bg-[#161616] border border-[#252525] text-white rounded-md focus:outline-none focus:border-[#3B82F6] transition-colors"
+              autoComplete="current-password"
+              className="w-full h-11 px-4 text-[15px] bg-[hsl(var(--color-surface))] border border-[hsl(var(--color-border))] text-[hsl(var(--color-text-primary))] rounded-lg focus:outline-none focus:border-[hsl(var(--color-accent))] focus:ring-1 focus:ring-[hsl(var(--color-accent))] transition-all duration-200"
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <div className="text-[12px] text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/20 px-3 py-2 rounded-md">
+            <div className="flex items-center gap-2 text-sm text-[hsl(var(--color-error))] bg-[hsl(var(--color-error))/0.1] border border-[hsl(var(--color-error))/0.2] px-4 py-3 rounded-lg">
+              <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
               {error}
             </div>
           )}
@@ -92,17 +128,22 @@ export default function AuthForm() {
           <button
             type="submit"
             disabled={buttonState === 'loading'}
-            className={`w-full px-4 py-2.5 text-[13px] font-medium rounded-md transition-colors ${
+            className={`w-full h-11 text-[15px] font-medium rounded-lg transition-all duration-200 ${
               buttonState === 'success'
-                ? 'bg-[#10B981] text-white'
+                ? 'bg-[hsl(var(--color-success))] text-white'
                 : buttonState === 'error'
-                ? 'bg-[#EF4444] text-white'
-                : 'bg-[#3B82F6] hover:bg-[#2563EB] text-white disabled:opacity-50 disabled:cursor-not-allowed'
+                ? 'bg-[hsl(var(--color-error))] text-white'
+                : 'bg-[hsl(var(--color-accent))] hover:bg-[hsl(200,80%,50%)] text-white disabled:opacity-50 disabled:cursor-not-allowed'
             }`}
           >
-            {getButtonText()}
+            {getButtonContent()}
           </button>
         </form>
+
+        {/* Footer */}
+        <p className="mt-8 text-center text-sm text-[hsl(var(--color-text-muted))]">
+          Sistema de proteção avançada
+        </p>
       </div>
     </div>
   );

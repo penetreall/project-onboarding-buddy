@@ -7,7 +7,7 @@ import SecurityLogs from './components/SecurityLogs';
 import HowToUse from './components/HowToUse';
 import UserManagement from './components/UserManagement';
 import Settings from './components/Settings';
-import ParticlesBackground from './components/ParticlesBackground';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -37,15 +37,27 @@ function App() {
   }, []);
 
   if (loading) {
-    return null;
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,4%)] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[hsl(200,80%,55%)] to-[hsl(200,60%,40%)] flex items-center justify-center animate-pulse">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span className="text-sm text-[hsl(0,0%,45%)]">Carregando...</span>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
     return (
-      <div className="fixed inset-0 theme-bg">
-        <ParticlesBackground />
-        <AuthForm />
-      </div>
+      <ThemeProvider>
+        <div className="min-h-screen bg-[hsl(0,0%,4%)]">
+          <AuthForm />
+        </div>
+      </ThemeProvider>
     );
   }
 
@@ -67,8 +79,7 @@ function App() {
   };
 
   return (
-    <div className="fixed inset-0 theme-bg">
-      <ParticlesBackground />
+    <ThemeProvider>
       <DashboardLayout
         currentView={currentView}
         onViewChange={setCurrentView}
@@ -76,7 +87,7 @@ function App() {
       >
         {renderView()}
       </DashboardLayout>
-    </div>
+    </ThemeProvider>
   );
 }
 

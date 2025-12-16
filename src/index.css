@@ -1,11 +1,32 @@
-@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@supports (font-variation-settings: normal) {
-  html { font-family: 'Inter var', sans-serif; }
+:root {
+  /* Core colors */
+  --color-background: 0 0% 4%;
+  --color-surface: 0 0% 7%;
+  --color-surface-elevated: 0 0% 10%;
+  --color-border: 0 0% 15%;
+  --color-border-subtle: 0 0% 12%;
+  
+  /* Text colors */
+  --color-text-primary: 0 0% 95%;
+  --color-text-secondary: 0 0% 65%;
+  --color-text-muted: 0 0% 45%;
+  
+  /* Accent - sophisticated blue-cyan */
+  --color-accent: 200 80% 55%;
+  --color-accent-muted: 200 60% 35%;
+  --color-accent-subtle: 200 40% 15%;
+  
+  /* Status colors */
+  --color-success: 152 60% 45%;
+  --color-warning: 38 90% 55%;
+  --color-error: 0 70% 55%;
 }
 
 * {
@@ -14,14 +35,17 @@
   box-sizing: border-box;
 }
 
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
 body {
-  font-family: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.5;
   font-weight: 400;
-  letter-spacing: -0.006em;
-  color: #EDEDED;
-  background: #000000;
+  letter-spacing: -0.011em;
+  color: hsl(var(--color-text-primary));
+  background: hsl(var(--color-background));
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -29,63 +53,39 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Theme backgrounds */
 [data-theme="dark"] .theme-bg {
-  background: #000000;
+  background: hsl(var(--color-background));
 }
 
 [data-theme="ice"] .theme-bg {
-  background:
-    radial-gradient(ellipse 150% 160% at 50% -25%, rgba(30, 80, 110, 0.38) 0%, rgba(25, 70, 95, 0.30) 20%, rgba(20, 60, 85, 0.22) 40%, rgba(15, 50, 75, 0.12) 60%, rgba(13, 40, 60, 0.06) 80%, rgba(13, 30, 45, 0.03) 100%),
-    linear-gradient(180deg,
-      rgba(24, 68, 95, 0.42) 0%,
-      rgba(22, 64, 89, 0.38) 10%,
-      rgba(20, 60, 83, 0.34) 20%,
-      rgba(18, 52, 74, 0.30) 30%,
-      rgba(17, 48, 70, 0.26) 40%,
-      rgba(15, 40, 58, 0.22) 50%,
-      rgba(14, 35, 51, 0.18) 60%,
-      rgba(13, 29, 43, 0.14) 70%,
-      rgba(13, 24, 36, 0.10) 80%,
-      rgba(13, 19, 29, 0.06) 90%,
-      rgba(13, 15, 22, 0.03) 100%
-    ),
-    #0D0D0D;
+  background: 
+    radial-gradient(ellipse 120% 100% at 50% 0%, hsla(200, 50%, 15%, 0.4) 0%, transparent 60%),
+    hsl(var(--color-background));
 }
 
 [data-theme="fire"] .theme-bg {
-  background:
-    radial-gradient(ellipse 150% 160% at 50% -25%, rgba(170, 60, 60, 0.44) 0%, rgba(145, 52, 52, 0.32) 20%, rgba(120, 44, 44, 0.22) 40%, rgba(95, 36, 36, 0.12) 60%, rgba(70, 28, 28, 0.06) 80%, rgba(45, 20, 20, 0.03) 100%),
-    linear-gradient(180deg,
-      rgba(140, 50, 50, 0.48) 0%,
-      rgba(120, 43, 43, 0.40) 10%,
-      rgba(105, 37, 37, 0.34) 20%,
-      rgba(90, 33, 33, 0.28) 30%,
-      rgba(77, 29, 29, 0.23) 40%,
-      rgba(66, 26, 26, 0.18) 50%,
-      rgba(56, 23, 23, 0.13) 60%,
-      rgba(48, 20, 20, 0.09) 70%,
-      rgba(39, 18, 18, 0.06) 80%,
-      rgba(30, 16, 16, 0.04) 90%,
-      rgba(21, 14, 14, 0.02) 100%
-    ),
-    #0D0D0D;
+  background: 
+    radial-gradient(ellipse 120% 100% at 50% 0%, hsla(0, 50%, 15%, 0.4) 0%, transparent 60%),
+    hsl(var(--color-background));
 }
 
 #root {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+/* Form elements */
 input::placeholder,
 textarea::placeholder {
-  color: #666666;
+  color: hsl(var(--color-text-muted));
   opacity: 1;
 }
 
 input,
 textarea,
 select {
-  font-feature-settings: 'tnum', 'ss01';
+  font-family: inherit;
 }
 
 select {
@@ -99,15 +99,67 @@ select {
 }
 
 select option {
-  background: #000000;
-  color: #EDEDED;
+  background: hsl(var(--color-surface));
+  color: hsl(var(--color-text-primary));
 }
 
+/* Utilities */
 .tabular-nums {
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
 }
 
-button {
-  font-feature-settings: 'ss01';
+.font-mono {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', monospace;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--color-border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--color-border-subtle));
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid hsl(var(--color-accent));
+  outline-offset: 2px;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--color-surface)) 0%,
+    hsl(var(--color-surface-elevated)) 50%,
+    hsl(var(--color-surface)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
