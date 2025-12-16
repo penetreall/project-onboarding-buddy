@@ -77,28 +77,22 @@ export async function login(username: string, password: string): Promise<LoginRe
 }
 
 export async function logout(): Promise<void> {
-  try {
-    await fetch(`${BACKEND_URL}/logout`, {
-      method: 'POST',
-      headers: getHeaders(),
-    });
-  } finally {
-    setSessionId(null);
-  }
+  setSessionId(null);
+  localStorage.removeItem('ice_wall_user');
 }
 
 export async function getCurrentUser(): Promise<User> {
-  const response = await fetch(`${BACKEND_URL}/me`, {
-    method: 'GET',
-    headers: getHeaders(),
-  });
-
-  if (!response.ok) {
+  const sessionId = getSessionId();
+  if (!sessionId) {
     throw new Error('Unauthorized');
   }
-
-  const data = await response.json();
-  return data.user;
+  
+  const userStr = localStorage.getItem('ice_wall_user');
+  if (!userStr) {
+    throw new Error('Unauthorized');
+  }
+  
+  return JSON.parse(userStr);
 }
 
 export interface BypassPackageResult {

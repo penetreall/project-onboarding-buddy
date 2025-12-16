@@ -1,6 +1,5 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
-import JSZip from "npm:jszip@3.10.1";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import JSZip from "https://esm.sh/jszip@3.10.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -468,7 +467,7 @@ Deno.serve(async (req: Request) => {
 
     const filename = `icewall-${domain.protected_domain.replace(/[^a-z0-9]/gi, '-')}.zip`;
 
-    return new Response(zipBlob, {
+    return new Response(new Uint8Array(zipBlob), {
       status: 200,
       headers: {
         ...corsHeaders,
